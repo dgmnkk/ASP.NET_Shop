@@ -1,6 +1,7 @@
-﻿@model ShopDbContext;
+﻿@model List<Advertisement>;
 <h1>Advertisements</h1>
 <table class="table table-striped">
+	<a class="btn btn-light" asp-area="" asp-controller="Advertisements" asp-action="Create">Add Advertisement</a>
 	<thead>
 		<tr>
 			<th scope="col">#</th>
@@ -15,15 +16,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		@{
-			var adverts = Model.Advertisements.ToList();
-			var categories = Model.Categories.ToList();
-			var conditions = Model.Conditions.ToList();
-			var users = Model.Users.ToList();
-		}
-		@foreach(var i in adverts)
+		@foreach(var i in Model)
 		{
 			<tr class="align-middle">
+				<td></td>
 				<td>@i.Name</td>
 				<td>@i.Brand</td>
 				<td>@i.Description</td>
