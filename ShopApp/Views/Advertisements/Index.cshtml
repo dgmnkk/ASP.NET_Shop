@@ -1,0 +1,38 @@
+﻿@model ShopDbContext;
+<h1>Advertisements</h1>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Name</th>
+			<th scope="col">Brand</th>
+			<th scope="col">Description</th>
+			<th scope="col">Price</th>
+			<th scope="col">Category</th>
+			<th scope="col">Condition</th>
+			<th scope="col">Seller</th>
+			<th scope="col">Publication</th>
+		</tr>
+	</thead>
+	<tbody>
+		@{
+			var adverts = Model.Advertisements.ToList();
+			var categories = Model.Categories.ToList();
+			var conditions = Model.Conditions.ToList();
+			var users = Model.Users.ToList();
+		}
+		@foreach(var i in adverts)
+		{
+			<tr class="align-middle">
+				<td>@i.Name</td>
+				<td>@i.Brand</td>
+				<td>@i.Description</td>
+				<td>@i.Price $</td>
+				<td>@i.Category.Name</td>
+				<td>@i.Condition.Name</td>
+				<td>@i.Seller.Login</td>
+				<td>@i.PublicationDate</td>
+			</tr>
+		}
+	</tbody>
+</table>
