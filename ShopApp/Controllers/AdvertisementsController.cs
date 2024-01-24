@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using ShopApp.Data;
@@ -13,6 +14,14 @@ namespace ShopApp.Controllers
         {
             this.context = context;
         }
+        private void LoadCategories()
+        {
+            ViewBag.Categories = new SelectList(context.Categories.ToList(), nameof(Category.Id), nameof(Category.Name));
+		}
+        private void LoadConditions()
+        {
+            ViewBag.Conditions = new SelectList(context.Conditions.ToList(),nameof(Condition.Id), nameof(Condition.Name));
+        }
         public IActionResult Index()
         {
             var adverts = context.Advertisements
@@ -25,15 +34,23 @@ namespace ShopApp.Controllers
 
         public IActionResult Create()
         {
+            LoadCategories();
+            LoadConditions();
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(Advertisement advertisement)
         {
-            advertisement.Views = 0;
-            advertisement.SellerId = 1;
-            advertisement.PublicationDate = DateTime.Now;
+			advertisement.Views = 0;
+			advertisement.SellerId = 1;
+			advertisement.PublicationDate = DateTime.Now;
+			if (!ModelState.IsValid)
+            {
+                LoadConditions();
+                LoadCategories();
+                return View();
+            }
             context.Advertisements.Add(advertisement);
             context.SaveChanges();
 			return RedirectToAction(nameof(Index));

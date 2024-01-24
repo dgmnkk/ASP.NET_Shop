@@ -10,7 +10,8 @@ namespace ShopApp.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Condition> Conditions { get; set; }
         public DbSet<User> Users { get; set; }
-
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Entities.Attribute> Attributes { get; set; }
         public ShopDbContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

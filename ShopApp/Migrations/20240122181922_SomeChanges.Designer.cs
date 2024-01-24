@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopApp.Data;
 
@@ -11,9 +12,11 @@ using ShopApp.Data;
 namespace ShopApp.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    partial class ShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240122181922_SomeChanges")]
+    partial class SomeChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace ShopApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("AdvertisementAttribute", b =>
-                {
-                    b.Property<int>("AdvertisementsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AttributesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AdvertisementsId", "AttributesId");
-
-                    b.HasIndex("AttributesId");
-
-                    b.ToTable("AdvertisementAttribute");
-                });
 
             modelBuilder.Entity("ShopApp.Data.Entities.Advertisement", b =>
                 {
@@ -63,9 +51,6 @@ namespace ShopApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("LocationId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -87,8 +72,6 @@ namespace ShopApp.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ConditionId");
-
-                    b.HasIndex("LocationId");
 
                     b.HasIndex("SellerId");
 
@@ -123,23 +106,6 @@ namespace ShopApp.Migrations
                             SellerId = 2,
                             Views = 20
                         });
-                });
-
-            modelBuilder.Entity("ShopApp.Data.Entities.Attribute", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Attributes");
                 });
 
             modelBuilder.Entity("ShopApp.Data.Entities.Category", b =>
@@ -230,23 +196,6 @@ namespace ShopApp.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ShopApp.Data.Entities.Location", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Locations");
-                });
-
             modelBuilder.Entity("ShopApp.Data.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -294,21 +243,6 @@ namespace ShopApp.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AdvertisementAttribute", b =>
-                {
-                    b.HasOne("ShopApp.Data.Entities.Advertisement", null)
-                        .WithMany()
-                        .HasForeignKey("AdvertisementsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShopApp.Data.Entities.Attribute", null)
-                        .WithMany()
-                        .HasForeignKey("AttributesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ShopApp.Data.Entities.Advertisement", b =>
                 {
                     b.HasOne("ShopApp.Data.Entities.Category", "Category")
@@ -323,10 +257,6 @@ namespace ShopApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShopApp.Data.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
-
                     b.HasOne("ShopApp.Data.Entities.User", "Seller")
                         .WithMany("Advertisements")
                         .HasForeignKey("SellerId")
@@ -336,8 +266,6 @@ namespace ShopApp.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Condition");
-
-                    b.Navigation("Location");
 
                     b.Navigation("Seller");
                 });

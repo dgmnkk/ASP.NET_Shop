@@ -5,10 +5,12 @@
     <div class="col-md-6">
         <label class="form-label">Name</label>
         <input asp-for=Name type="text" class="form-control" placeholder="Enter name">
+        <span asp-validation-for="Name" class="form-text text-danger"></span>
     </div>
     <div class="col-md-6">
         <label class="form-label">Brand</label>
         <input asp-for=Brand type="text" class="form-control" placeholder="Enter brand">
+        <span asp-validation-for="Brand" class="form-text text-danger"></span>
     </div>
     <div class="col-md-12">
         <label class="form-label">Price</label>
@@ -17,18 +19,24 @@
             <input asp-for=Price type="text" class="form-control" placeholder="Enter price">
             <span class="input-group-text">.00</span>
         </div>
+        <span asp-validation-for="Price" class="form-text text-danger"></span>
     </div>
     <div class="col-md-12">
         <label class="form-label">Description</label>
         <input asp-for=Description type="text" class="form-control" placeholder="Enter description">
+        <span asp-validation-for="Description" class="form-text text-danger"></span>
     </div>
     <div class="col-md-6">
-        <label class="form-label">Category</label>
-        <input asp-for=CategoryId type="text" class="form-control" placeholder="Enter category id">
+        <label asp-for=CategoryId class="form-label">Category</label>
+        <select asp-for=CategoryId asp-items=ViewBag.Categories class="form-select">
+            <option disabled selected>Choose...</option>
+        </select>
     </div>
     <div class="col-md-6">
-        <label class="form-label">Condition</label>
-        <input asp-for=ConditionId type="text" class="form-control" placeholder="Enter condition id">
+        <label asp-for=ConditionId class="form-label">Condition</label>
+        <select asp-for=ConditionId asp-items=ViewBag.Conditions class="form-select">
+            <option disabled selected>Choose...</option>
+        </select>
     </div>
     <div class="col-md-12">
         <label class="form-label">Image URL</label>
