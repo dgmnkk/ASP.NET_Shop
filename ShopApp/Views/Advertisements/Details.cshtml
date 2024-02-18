@@ -1,0 +1,24 @@
+﻿@using BusinessLogic.DTOs;
+@model AdvertisementDto
+<div class="card mb-3">
+    <h5 class="card-header">
+        <a href="@ViewBag.ReturnUrl" class="btn btn-dark">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+    </h5>
+    <div class="image-section">
+        <img src=@Model.ImageUrl class="card-img-top">
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <h4 class="card-title">@Model.Name</h4>
+            <a asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id" asp-route-returnUrl="@Context.Request.Path" class="bi bi-heart"></a>
+        </div>
+        <h5 class="card-title">@Model.Price $</h5>
+        <p class="card-text">@Model.Brand</p>
+        <p class="card-text">@Html.Raw(Model.Description)</p>
+    </div>
+    <div>
+        <a asp-controller="Orders" asp-action="Create" class="btn btn-success mt-3">Order</a>
+    </div>
+</div>

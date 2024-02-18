@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using BusinessLogic.Interfaces
+@using Microsoft.AspNetCore.Identity
+@inject ICartService cartService;
+@inject SignInManager<User> SignInManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,6 +11,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ShopApp.styles.css" asp-append-version="true" />
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <header>
@@ -22,10 +28,29 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Advertisements" asp-action="Index">Advertisements</a>
-                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Advertisements" asp-action="Index">Advertisements</a>
+                            </li>
+                        }
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Orders" asp-action="Index">Orders</a>
+                            </li>
+                        }
                     </ul>
+                        <a class="bi bi-heart" asp-area="" asp-controller="Cart" asp-action="Index"></a>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <div class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Advertisements" asp-action="MyAdvertisements">My Advertisements</a>
+                        </div>
+                    }
+                        
+                        <partial name="_LoginPartial" />
+                   
                 </div>
             </div>
         </nav>

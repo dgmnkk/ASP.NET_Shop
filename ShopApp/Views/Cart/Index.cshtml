@@ -2,7 +2,7 @@
 @model List<AdvertisementDto>;
 
 <div class="text-center">
-    <h1 class="display-4 mb-4">Advertisements</h1>
+    <h1 class="display-4 mb-4">Selected Advertisements</h1>
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
         @foreach (var i in Model)
@@ -11,5 +11,9 @@
                 <partial name="AdvertisementCard" model="@i" />
             </div>
         }
+    </div>
+
+    <div class="card-footer text-muted">
+        Items: @Model.Count
     </div>
 </div>

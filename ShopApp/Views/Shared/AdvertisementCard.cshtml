@@ -1,0 +1,32 @@
+﻿@inject ICartService cartService;
+@using BusinessLogic.DTOs;
+@using BusinessLogic.Interfaces;
+@model AdvertisementDto
+<div class="card">
+    <a class="home-card" asp-controller="Advertisements" asp-action="Details" asp-route-id="@Model.Id" asp-route-returnUrl="@Context.Request.Path">
+        <img src="@Model.ImageUrl"  alt="Advertisement Image">
+    </a>
+    <div class="card-body h-100 home-card">
+        <div class="d-flex justify-content-between">
+            <h5 class="card-title">
+                <a asp-controller="Advertisements" asp-action="Details" asp-route-id="@Model.Id" asp-route-returnUrl="@Context.Request.Path" >@Model.Name</a>
+            </h5>
+            <div>
+                @if (cartService.IsExists(Model.Id))
+                {
+                    <a asp-controller="Cart" asp-action="Remove" asp-route-id="@Model.Id" asp-route-returnUrl="@Context.Request.Path" class="bi bi-heart-fill"></a>
+                }
+                else
+                {
+                    <a asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id" asp-route-returnUrl="@Context.Request.Path" class="bi bi-heart"></a>
+                }
+            </div>
+        </div>
+        <h5 class="card-title">@Model.Price $</h5>
+        <p class="card-text">@Model.LocationName</p>
+        <p class="card-text"><small class="text-body-secondary">@Model.PublicationDate</small></p>
+        <div>
+            <a asp-controller="Orders" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-success mt-3">Order</a>
+        </div>
+    </div>
+</div>

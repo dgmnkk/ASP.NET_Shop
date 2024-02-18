@@ -20,3 +20,20 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.image-section img{
+    margin: 20px;
+    width: 400px;
+    height: 400px;
+}
+
+.image-section{
+    margin-left: 30%;
+}
+.home-card img {
+    margin: 10px;
+    object-fit:contain;
+    width: 400px;
+    height: 400px;
+}
+

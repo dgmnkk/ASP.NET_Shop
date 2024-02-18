@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessLogic.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using ShopApp.Models;
 using System.Diagnostics;
 
@@ -6,16 +7,16 @@ namespace ShopApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+       private readonly IAdvertsService advertsService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IAdvertsService advertsService)
         {
-            _logger = logger;
+           this.advertsService = advertsService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(advertsService.GetAll());
         }
 
 

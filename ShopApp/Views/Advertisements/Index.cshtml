@@ -1,4 +1,5 @@
-﻿@model List<Advertisement>;
+﻿@using BusinessLogic.DTOs;
+@model List<AdvertisementDto>;
 <h1>Advertisements</h1>
 <table class="table table-striped">
 	<a class="btn btn-light" asp-area="" asp-controller="Advertisements" asp-action="Create">Add Advertisement</a>
@@ -7,7 +8,6 @@
 			<th scope="col">#</th>
 			<th scope="col">Name</th>
 			<th scope="col">Brand</th>
-			<th scope="col">Description</th>
 			<th scope="col">Price</th>
 			<th scope="col">Category</th>
 			<th scope="col">Condition</th>
@@ -19,15 +19,27 @@
 		@foreach(var i in Model)
 		{
 			<tr class="align-middle">
-				<td></td>
+				<td>@i.Id</td>
 				<td>@i.Name</td>
 				<td>@i.Brand</td>
-				<td>@i.Description</td>
 				<td>@i.Price $</td>
-				<td>@i.Category.Name</td>
-				<td>@i.Condition.Name</td>
-				<td>@i.Seller.Login</td>
+				<td>@i.CategoryName</td>
+				<td>@i.ConditionName</td>
+				<td>@i.SellerName</td>
 				<td>@i.PublicationDate</td>
+				<td>
+					<div class="btn-group" role="group" aria-label="Basic example">
+						<a class="btn btn-dark" asp-action="Details" asp-route-id="@i.Id" asp-route-returnUrl="@Context.Request.Path">
+							<i class="bi bi-info-lg"></i>
+						</a>
+						<a class="btn btn-warning" asp-action="Edit" asp-route-id="@i.Id">
+							<i class="bi bi-pencil-fill"></i>
+						</a>
+						<a class="btn btn-danger" asp-action="Delete" asp-route-id="@i.Id">
+							<i class="bi bi-trash3-fill"></i>
+						</a>
+					</div>
+				</td>
 			</tr>
 		}
 	</tbody>

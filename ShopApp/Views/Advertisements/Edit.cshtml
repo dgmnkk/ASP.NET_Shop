@@ -1,20 +1,20 @@
 ﻿@using BusinessLogic.DTOs;
 @model AdvertisementDto;
-<h1 class="text-center">Add Advertisement</h1>
+<h1 class="text-center">Edit Advertisement</h1>
 
-<form class="row g-3" method="post" asp-action="Create">
+<form class="row g-3" method="post" asp-action="Edit">
     <div class="col-md-6">
-        <label class="form-label">Name</label>
+        <label asp-for=Name class="form-label">Name</label>
         <input asp-for=Name type="text" class="form-control" placeholder="Enter name">
         <span asp-validation-for="Name" class="form-text text-danger"></span>
     </div>
     <div class="col-md-6">
-        <label class="form-label">Brand</label>
+        <label asp-for=Brand class="form-label">Brand</label>
         <input asp-for=Brand type="text" class="form-control" placeholder="Enter brand">
         <span asp-validation-for="Brand" class="form-text text-danger"></span>
     </div>
     <div class="col-md-12">
-        <label class="form-label">Price</label>
+        <label asp-for=Price class="form-label">Price</label>
         <div class="input-group mb-3">
             <span class="input-group-text">$</span>
             <input asp-for=Price type="text" class="form-control" placeholder="Enter price">
@@ -23,7 +23,7 @@
         <span asp-validation-for="Price" class="form-text text-danger"></span>
     </div>
     <div class="col-md-12">
-        <label class="form-label">Description</label>
+        <label asp-for=Description class="form-label">Description</label>
         <textarea id="description-input" asp-for=Description type="text" class="form-control" placeholder="Enter description"></textarea>
         <span asp-validation-for="Description" class="form-text text-danger"></span>
     </div>
@@ -40,11 +40,11 @@
         </select>
     </div>
     <div class="col-md-12">
-        <label class="form-label">Image URL</label>
+        <label asp-for=ImageUrl class="form-label">Image URL</label>
         <input asp-for=ImageUrl type="text" class="form-control" placeholder="Enter image url">
     </div>
     <div class="col-12 text-center">
-        <button type="submit" class="btn btn-success">Add</button>
+        <button type="submit" class="btn btn-success">Save</button>
     </div>
 </form>
 

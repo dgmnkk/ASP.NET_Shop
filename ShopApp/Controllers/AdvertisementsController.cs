@@ -1,35 +1,46 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using BusinessLogic.DTOs;
+using BusinessLogic.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using ShopApp.Data;
 using ShopApp.Data.Entities;
+using ShopApp.Helpers;
+using System.Security.Claims;
 
 namespace ShopApp.Controllers
 {
     public class AdvertisementsController : Controller
     {
-        private readonly ShopDbContext context;
-        public AdvertisementsController(ShopDbContext context)
+		private readonly IAdvertsService advertsService;
+		private readonly IMapper mapper;
+        private string UserId => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        public AdvertisementsController(IAdvertsService advertsService, IMapper mapper)
         {
-            this.context = context;
-        }
+            this.advertsService = advertsService;
+            this.mapper = mapper;
+		}
         private void LoadCategories()
         {
-            ViewBag.Categories = new SelectList(context.Categories.ToList(), nameof(Category.Id), nameof(Category.Name));
+            ViewBag.Categories = new SelectList(advertsService.GetAllCategories(), nameof(Category.Id), nameof(Category.Name));
 		}
         private void LoadConditions()
         {
-            ViewBag.Conditions = new SelectList(context.Conditions.ToList(),nameof(Condition.Id), nameof(Condition.Name));
+            ViewBag.Conditions = new SelectList(advertsService.GetAllConditions(), nameof(Condition.Id), nameof(Condition.Name));
         }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            var adverts = context.Advertisements
-                .Include(x => x.Category)
-                .Include(x => x.Seller)
-                .Include(x => x.Condition)
-                .ToList();
-            return View(adverts);
+            return View(advertsService.GetAll());
+        }
+
+        [AllowAnonymous]
+        public IActionResult MyAdvertisements()
+        {
+            return View("Index", advertsService.GetByUser(UserId));
         }
 
         public IActionResult Create()
@@ -40,20 +51,80 @@ namespace ShopApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Advertisement advertisement)
+        public IActionResult Create(AdvertisementDto advertisement)
         {
 			advertisement.Views = 0;
-			advertisement.SellerId = 1;
 			advertisement.PublicationDate = DateTime.Now;
+            advertisement.SellerId = UserId;
 			if (!ModelState.IsValid)
             {
                 LoadConditions();
                 LoadCategories();
                 return View();
             }
-            context.Advertisements.Add(advertisement);
-            context.SaveChanges();
-			return RedirectToAction(nameof(Index));
+            advertsService.Create(advertisement);
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return RedirectToAction(nameof(MyAdvertisements));
+            }
 		}
-    }
+        [AllowAnonymous]
+        public IActionResult Details(int id, string? returnUrl)
+        {
+            var advert = advertsService.Get(id);
+            if (advert == null) return NotFound();
+
+            ViewBag.ReturnUrl = returnUrl;
+
+            return View(advert);
+        }
+
+		public IActionResult Edit(int id)
+		{
+			var advert = advertsService.Get(id);
+			if (advert == null) return NotFound();
+			LoadConditions();
+			LoadCategories();
+			return View(advert);
+		}
+
+		[HttpPost]
+		public IActionResult Edit(AdvertisementDto model)
+		{
+			if (!ModelState.IsValid)
+			{
+				LoadConditions();
+				LoadCategories();
+				return View();
+			}
+
+			advertsService.Edit(model);
+
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return RedirectToAction(nameof(MyAdvertisements));
+            }
+        }
+
+		public IActionResult Delete(int id)
+		{
+			advertsService.Delete(id);
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return RedirectToAction(nameof(MyAdvertisements));
+            }
+        }
+	}
 }
